@@ -298,9 +298,9 @@ class _HeaderWaveGradientPainter extends CustomPainter{
     );
 
     final Gradient gradient = new LinearGradient(colors: [
-      Color(0xff6D05E8),
-      Color(0xffC012FF),
-      Color(0xff6D05FA),
+      Color(0xff4a7a32),
+      Color(0xffa3e45c),
+      Color(0xff7ccc54),
     ]);
     final lapiz = Paint ()..shader = gradient.createShader(rect);
     //Propiedades

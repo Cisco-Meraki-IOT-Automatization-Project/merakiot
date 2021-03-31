@@ -19,11 +19,11 @@ class Dashboard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final items = <ItemBoton>[
-      new ItemBoton( FontAwesomeIcons.wifi, 'Wi-Fi Access', Color(0xff317183), Color(0xff46997D) ),
-      new ItemBoton( FontAwesomeIcons.video, 'Camera', Color(0xff6989F5), Color(0xff906EF5) ),
-      new ItemBoton( FontAwesomeIcons.doorOpen, 'Door log', Color(0xff66A9F2), Color(0xff536CF6) ),
+      new ItemBoton( FontAwesomeIcons.wifi, 'Wi-Fi Access',           Color(0xff317183), Color(0xff46997D) ),
+      new ItemBoton( FontAwesomeIcons.video, 'Camera',                Color(0xff6989F5), Color(0xff906EF5) ),
+      new ItemBoton( FontAwesomeIcons.doorOpen, 'Door log',           Color(0xff66A9F2), Color(0xff536CF6) ),
       new ItemBoton( FontAwesomeIcons.temperatureLow, 'Themperature', Color(0xffF2D572), Color(0xffE06AA3) ),
-      new ItemBoton( FontAwesomeIcons.tint, 'Humidity', Color(0xff317183), Color(0xff46997D) ),
+      new ItemBoton( FontAwesomeIcons.tint, 'Humidity',               Color(0xff317183), Color(0xff46997D) ),
     ];
 
     List<Widget>itemMap = items.map(
