@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:merakiot/src/utils/oauth.dart';
+import 'package:merakiot/src/widgets/buttons.dart';
 import 'package:merakiot/src/widgets/headers.dart';
 import 'package:merakiot/src/widgets/icon_container.dart';
 import 'package:merakiot/src/widgets/loginform.dart';
@@ -9,6 +11,15 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  int _counter = 0;
+  String idendity_provider;
+
+  void _incrementCounter() {
+    setState(() {
+      _counter++;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
@@ -45,7 +56,7 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                         ],
                       ),
-                      SizedBox(height: 10,),
+                      SizedBox(height: 1,),
                       ConstrainedBox(
                         constraints: BoxConstraints(
                           maxHeight: 350,
@@ -61,6 +72,30 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       ),
                       SizedBox(height: 10,),
+                      ConstrainedBox(
+                        constraints: BoxConstraints(
+                          maxHeight: 350,
+                          maxWidth: 350,
+                          minWidth: 300,
+                        ),
+                        child: GoogleButton(onGoogleSignIn)
+                      ),
+                      ConstrainedBox(
+                          constraints: BoxConstraints(
+                            maxHeight: 350,
+                            maxWidth: 350,
+                            minWidth: 300,
+                          ),
+                          child: FacebookButton(facebookLogin)
+                      ),
+                      ConstrainedBox(
+                          constraints: BoxConstraints(
+                            maxHeight: 350,
+                            maxWidth: 350,
+                            minWidth: 300,
+                          ),
+                          child: AppleButton(appleLogin)
+                      ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
@@ -81,4 +116,29 @@ class _LoginPageState extends State<LoginPage> {
       ),
     );
   }
+  void facebookLogin() async{
+    idendity_provider = "Facebook";
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) => OAuth(idendity_provider)),
+    );
+  }
+  void onGoogleSignIn() async{
+    idendity_provider = "Google";
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) => OAuth(idendity_provider)),
+    );
+  }
+  void appleLogin() async{
+    idendity_provider = "Apple";
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) => OAuth(idendity_provider)),
+    );
+  }
+
 }
