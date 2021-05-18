@@ -30,7 +30,7 @@ class _OAuthState extends State<OAuth> {
   }
   final COGNITO_CLIENT_ID = '41vpa4kp9jpfc0c5ebcuo8mlb7';
   final COGNITO_Pool_ID = 'us-east-2_bDahZBIQc';
-  final COGNITO_POOL_URL = 'https://meraki.auth.us-east-2.amazoncognito.com';  // CHANGE YOUR DOMAIN NAME
+  final COGNITO_POOL_URL = 'meraki.auth.us-east-2.amazoncognito.com';  // CHANGE YOUR DOMAIN NAME
   final CLIENT_SECRET = '4ek71aan6g1lee9ednmeuiuo85dajqt6b0gjntcst30ljbthi6g';
   var web_view_enable=0;
 
