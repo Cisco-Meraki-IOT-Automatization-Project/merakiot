@@ -64,14 +64,14 @@ class _LoginPageState extends State<LoginPage> {
                           minWidth: 300,
                         ),
                         child: CupertinoButton(
-                          padding: EdgeInsets.symmetric(vertical: 17),
+                          padding: EdgeInsets.symmetric(vertical: 16),
                           borderRadius: BorderRadius.circular(4),
                           color: Color.fromRGBO(137, 209, 101, 1),
                           onPressed: (){},
                           child: Text("Sign in",style: TextStyle(fontSize: 20),),
                         ),
                       ),
-                      SizedBox(height: 10,),
+                      SizedBox(height: 1,),
                       ConstrainedBox(
                         constraints: BoxConstraints(
                           maxHeight: 350,

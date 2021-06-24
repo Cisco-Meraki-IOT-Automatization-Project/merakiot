@@ -33,6 +33,10 @@ dependencies:
   flutter_svg: ^0.19.3
   webview_flutter: ^2.0.4
   amazon_cognito_identity_dart_2: ^0.1.25+4
+  wifi_iot: ^0.3.3
+  shared_preferences: ^2.0.5
+  aws_dynamodb_api: ^0.2.0
+  rxdart: ^0.27.1
 
 dev_dependencies:
   flutter_test:
