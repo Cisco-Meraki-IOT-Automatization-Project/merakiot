@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:merakiot/src/models/agenda_model.dart';
 import 'package:merakiot/src/provider/agenda_provider.dart';
 import 'package:merakiot/src/utils/shared_preferences.dart';
@@ -99,11 +100,7 @@ class __MainScrollState extends State<_MainScroll> {
   final citasProvider = new AgendaProvider();
   final prefs = new PreferenciasUsuario();
 
-  final items = [
-    _ListItem(titulo: 'COVID',        color: Color(0xffF08F66) ),
-    _ListItem(titulo: 'Sin sintomas',        color: Color(0xffF2A38A) ),
-    _ListItem(titulo: 'Consulta General', color: Color(0xffF7CDD5) ),
-  ];
+  final items = [];
 
   @override
   Widget build(BuildContext context) {
@@ -124,8 +121,12 @@ class __MainScrollState extends State<_MainScroll> {
                     (BuildContext context , int inde){
                       print(snapshot.data[0].motive);
                       return _ListItem(
-                        titulo: snapshot.data[inde].motive,
-                          color: Color(0xffF08F66)
+                        sintomas: snapshot.data[inde].motive,
+                          color: Color(0xffF08F66),
+                        time: snapshot.data[inde].time,
+                        date: snapshot.data[inde].date,
+                        nameP: snapshot.data[inde].patientName,
+                        surname: snapshot.data[inde].firstSurname,
                       );
                     },
                   childCount: snapshot.data.length
@@ -169,17 +170,41 @@ class _SliderCustomHeaderDelegate extends SliverPersistentHeaderDelegate {
   }
 }
 class _ListItem extends StatelessWidget {
-  final String titulo;
+  final String nameP;
+  final DateTime date;
+  final String time;
+  final String sintomas;
+  final String surname;
+  
   final Color color;
   const _ListItem({
-    Key key, this.titulo, this.color,
+    Key key, this.sintomas, this.color, this.nameP, this.date, this.time, this.surname,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
       alignment: Alignment.centerLeft,
-      child: Text(titulo,style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold,fontSize: 20),),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text('Paciente: $nameP $surname',style: TextStyle(color: Colors.yellowAccent, fontWeight: FontWeight.bold,fontSize: 20),),
+              Text(date.day.toString(),style: TextStyle(color: Colors.greenAccent, fontWeight: FontWeight.bold,fontSize: 20),),
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Icon(FontAwesomeIcons.calendar,color: Colors.white,),
+              Text(sintomas,style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold,fontSize: 20),),
+              Text(time,style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold,fontSize: 20),),
+            ],
+          ),
+        ],
+      ),
       padding: EdgeInsets.all(30),
       height: 130,
       margin: EdgeInsets.all(10),

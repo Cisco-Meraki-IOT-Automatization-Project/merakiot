@@ -94,7 +94,6 @@ class _LoginPageState extends State<LoginPage> {
                             maxWidth: 350,
                             minWidth: 300,
                           ),
-                          child: AppleButton(appleLogin)
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -126,14 +125,6 @@ class _LoginPageState extends State<LoginPage> {
   }
   void onGoogleSignIn() async{
     idendity_provider = "Google";
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-          builder: (context) => OAuth(idendity_provider)),
-    );
-  }
-  void appleLogin() async{
-    idendity_provider = "Apple";
     Navigator.push(
       context,
       MaterialPageRoute(

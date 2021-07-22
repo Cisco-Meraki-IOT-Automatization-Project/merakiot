@@ -1,4 +1,18 @@
 import 'dart:convert';
+
+class Consultas{
+  List<Consulta> items = new List();
+  Consultas();
+  Consultas.fromJsonList(List<dynamic> jsonList){
+    if(jsonList==null){
+      return;
+    }
+    for(var item in jsonList){
+      final consulta = new Consulta.fromJson(item);
+      items.add(consulta);
+    }
+  }
+}
 class Consulta {
   Consulta({
     this.date,

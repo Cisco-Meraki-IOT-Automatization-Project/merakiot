@@ -1,5 +1,8 @@
+import 'dart:async';
+
 import 'package:animate_do/animate_do.dart';
 import 'package:merakiot/src/pages/doctor_calendar.dart';
+import 'package:merakiot/src/pages/sensors_page.dart';
 import 'package:merakiot/src/utils/shared_preferences.dart';
 import 'package:merakiot/src/widgets/boton_seccion.dart';
 import 'package:flutter/material.dart';
@@ -7,6 +10,8 @@ import 'package:merakiot/src/widgets/headers.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter/services.dart';
 import 'package:wifi_iot/wifi_iot.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:animated_check/animated_check.dart';
 
 const NetworkSecurity STA_DEFAULT_SECURITY = NetworkSecurity.WPA;
 const String AP_DEFAULT_SSID = "INFINITUMF89A";
@@ -22,13 +27,32 @@ class ItemBoton {
   ItemBoton( this.icon, this.texto, this.color1, this.color2 );
 }
 
-class Dashboard extends StatelessWidget {
+class Dashboard extends StatefulWidget {
+  @override
+  _DashboardState createState() => _DashboardState();
+}
+
+class _DashboardState extends State<Dashboard> with SingleTickerProviderStateMixin{
+  AnimationController _animationController;
+  Animation<double> _animation;
+  bool shouldShow= false;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _animationController =
+        AnimationController(vsync: this, duration: Duration(seconds: 10));
+
+    _animation = new Tween<double>(begin: 0, end: 10).animate(
+        new CurvedAnimation(
+            parent: _animationController, curve: Curves.easeInOutCirc));
+  }
   @override
   Widget build(BuildContext context) {
     final items = <ItemBoton>[
       new ItemBoton( FontAwesomeIcons.wifi, 'Wi-Fi Access',           Color(0xff317183), Color(0xff46997D) ),
       new ItemBoton( FontAwesomeIcons.calendar, 'Agendar Cita',                Color(0xff6989F5), Color(0xff906EF5) ),
-      //new ItemBoton( FontAwesomeIcons.doorOpen, 'Door log',           Color(0xff66A9F2), Color(0xff536CF6) ),
+      new ItemBoton( FontAwesomeIcons.doorOpen, 'Sensor Log',           Color(0xff66A9F2), Color(0xff536CF6) ),
       //new ItemBoton( FontAwesomeIcons.temperatureLow, 'Themperature', Color(0xffF2D572), Color(0xffE06AA3) ),
       //new ItemBoton( FontAwesomeIcons.tint, 'Humidity',               Color(0xff317183), Color(0xff46997D) ),
     ];
@@ -42,13 +66,31 @@ class Dashboard extends StatelessWidget {
               color1: item.color1,
               color2: item.color2,
               onPress: (){
-                Navigator.push(context,
-                  MaterialPageRoute(builder: (context)=>DoctorPage()));},))
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>SensorPage()));
+                },
+            )
+            )
     ).toList();
     return Scaffold(
       body: Stack(
           children: <Widget>[
-      Container(
+            if(shouldShow)
+              Container(
+                child: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Container(
+                        child: AnimatedCheck(
+                          progress: _animation,
+                          size: 200,
+                        )),
+                    ],
+                  ),
+                )
+              ),
+            if(!shouldShow)
+            Container(
       margin: EdgeInsets.only(top: 200),
       child: ListView(
           physics: BouncingScrollPhysics(),
@@ -58,9 +100,10 @@ class Dashboard extends StatelessWidget {
       ],
     ),
     ),
-    _Encabezado()
-    ],
-    ),
+            if(!shouldShow)
+            _Encabezado()
+          ],
+      ),
     );
   }
 }
@@ -77,11 +120,15 @@ class _Encabezado extends StatefulWidget {
 class _EncabezadoState extends State<_Encabezado> {
   final prefs = new PreferenciasUsuario();
   String _name;
+  String _type;
+  String codeDialog;
+  String valueText;
+  TextEditingController _textFieldController = TextEditingController();
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _name= prefs.nombre;
+    _type = prefs.type;
   }
   @override
   Widget build(BuildContext context) {
@@ -97,15 +144,76 @@ class _EncabezadoState extends State<_Encabezado> {
         Positioned(
           right: 0,
           top: 40,
-          child:RawMaterialButton(child: FaIcon(FontAwesomeIcons.ellipsisV, color: Colors.white,),
-            onPressed: () {},
-            shape: CircleBorder(),
-            padding: EdgeInsets.all(15),
+          child:PopupMenuButton<String>(
+            onSelected: handleClick,
+            itemBuilder: (BuildContext context){
+               if (_type == 'Doctor'){
+                return {'Logout'}.map((String e) {
+                  return PopupMenuItem<String>(child: Text(e),value: e,);}
+                ).toList();
+              }else{
+                return {'logout', 'Upgrade Doctor'}.map((String e) {
+                  return PopupMenuItem<String>(child: Text(e),value: e,);}
+                ).toList();
+              }
+
+            },
+            ),
           ),
-        )
       ],
     );
   }
+  Future<void> _displayTextInputDialog(BuildContext context) async {
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            shape: StadiumBorder(),
+            elevation: 24.0,
+            backgroundColor: Color(0xff528b26),
+            title: Text('Write the email Doctor',style: TextStyle(color: Colors.white,),textAlign: TextAlign.center,),
+            content: TextField(
+              onChanged: (value) {
+                setState(() {
+                  valueText = value;
+                });
+              },
+              controller: _textFieldController,
+              decoration: InputDecoration(hintText: "email", hintStyle: TextStyle(color: Colors.white)),
+            ),
+            actions: <Widget>[
+              FlatButton(
+                shape: CircleBorder(),
+                color: Color(0xff75c636),
+                textColor: Colors.white,
+                child: Text('OK'),
+                onPressed: () {
+                  setState(() {
+                    codeDialog = valueText;
+                    Navigator.pop(context);
+                  });
+                },
+              ),
+
+            ],
+          );
+        });
+  }
+  void handleClick(String value) {
+    switch (value) {
+      case 'logout':
+        Navigator.of(context).pop();
+        break;
+      case 'Upgrade Doctor':
+        _displayTextInputDialog(context);
+        print('');
+        break;
+      case 'Upgrade Apikey':
+        _displayTextInputDialog(context);
+        print('new api key');
+    }
+  }
+
 }
 
 class BotonSeccionTemp extends StatelessWidget {

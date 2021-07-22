@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:merakiot/src/pages/dashboard.dart';
-import 'package:merakiot/src/pages/doctor_calendar.dart';
 import 'package:merakiot/src/pages/log.dart';
 import 'package:flutter/services.dart';
-import 'package:merakiot/src/pages/temp_page.dart';
 import 'package:merakiot/src/utils/shared_preferences.dart';
+import 'dart:async';
+import 'package:flutterdoc/flutterdoc.dart';
+export 'src/widgets/loginform.dart';
+
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
@@ -24,9 +25,9 @@ class MyApp extends StatelessWidget {
     ]);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
+      title: 'Meraki IoT',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.lightGreen,
       ),
       home: LoginPage(),
     );

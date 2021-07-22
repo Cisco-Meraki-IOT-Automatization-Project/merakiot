@@ -37,6 +37,12 @@ dependencies:
   shared_preferences: ^2.0.5
   aws_dynamodb_api: ^0.2.0
   rxdart: ^0.27.1
+  animated_check: ^1.0.2
+  syncfusion_flutter_charts: ^18.4.49
+  flutter_card_swipper: ^0.4.0
+  sentry: ">=3.0.0 <4.0.0"
+  dartdoc: ^0.39.0
+  flutterdoc: ^0.0.1
 
 dev_dependencies:
   flutter_test:
